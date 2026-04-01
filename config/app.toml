@@ -1,0 +1,21 @@
+[app]
+resolution_width = 1920
+resolution_height = 1080
+retry_attempts = 3
+retry_delay_seconds = 1.0
+post_limit = 10
+api_base_url = "https://jsonplaceholder.typicode.com"
+artifacts_dir = "artifacts"
+grounding_backend = "vision_llm"
+grounding_timeout_seconds = 60.0
+confidence_threshold = 0.72
+typing_delay_ms = 15
+launch_timeout_seconds = 8.0
+window_poll_interval_seconds = 0.25
+
+[output]
+save_dir = "~/Desktop/tjm-project"
+overwrite_mode = "skip"
+
+[logging]
+level = "INFO"

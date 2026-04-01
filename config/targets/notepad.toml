@@ -1,0 +1,9 @@
+[target]
+key = "notepad"
+display_name = "Notepad"
+grounding_query = "Notepad desktop icon"
+window_title_contains = "Notepad"
+save_dialog_title_contains = "Save As"
+double_click = true
+filename_pattern = "post_{id}.txt"
+content_template = "Title: {title}\n\n{body}"

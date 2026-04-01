@@ -1,0 +1,44 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tjm-interview"
+version = "0.1.0"
+description = "Bootstrap for a configurable, module-based desktop automation project."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "openai>=1.0.0",
+]
+
+[project.scripts]
+tjm-automation = "tjm_automation.main:run"
+
+[dependency-groups]
+dev = [
+  "mypy>=1.15.0",
+  "pytest>=8.3.5",
+  "ruff>=0.11.5",
+]
+
+[tool.uv]
+package = true
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B"]
+
+[tool.mypy]
+python_version = "3.13"
+mypy_path = "src"
+packages = ["tjm_automation"]
+warn_unused_configs = true
