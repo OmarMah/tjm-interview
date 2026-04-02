@@ -4,6 +4,7 @@ Automates fetching JSONPlaceholder posts, opening Notepad from the desktop, writ
 
 **Setup**
 ```powershell
+python -m pip install --upgrade pip
 python -m pip install -e .
 Copy-Item .env.example .env
 ```
