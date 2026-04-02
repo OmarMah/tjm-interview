@@ -46,6 +46,11 @@ def load_settings(config_dir: Path | None = None, target_name: str = "notepad") 
             retry_delay_seconds=_require_float(app_section, "retry_delay_seconds", "app.toml"),
             post_limit=_require_int(app_section, "post_limit", "app.toml"),
             api_base_url=_require_str(app_section, "api_base_url", "app.toml"),
+            api_timeout_seconds=_optional_float(
+                app_section,
+                "api_timeout_seconds",
+                default=15.0,
+            ),
             artifacts_dir=_resolve_path(
                 _require_str(app_section, "artifacts_dir", "app.toml"),
                 base_dir=project_root,
@@ -63,10 +68,80 @@ def load_settings(config_dir: Path | None = None, target_name: str = "notepad") 
                 "launch_timeout_seconds",
                 default=8.0,
             ),
+            close_timeout_seconds=_optional_float(
+                app_section,
+                "close_timeout_seconds",
+                default=10.0,
+            ),
             window_poll_interval_seconds=_optional_float(
                 app_section,
                 "window_poll_interval_seconds",
-                default=0.25,
+                default=0.1,
+            ),
+            show_desktop_delay_seconds=_optional_float(
+                app_section,
+                "show_desktop_delay_seconds",
+                default=0.4,
+            ),
+            focus_delay_seconds=_optional_float(
+                app_section,
+                "focus_delay_seconds",
+                default=0.1,
+            ),
+            notepad_focus_delay_seconds=_optional_float(
+                app_section,
+                "notepad_focus_delay_seconds",
+                default=0.2,
+            ),
+            popup_timeout_seconds=_optional_float(
+                app_section,
+                "popup_timeout_seconds",
+                default=0.4,
+            ),
+            popup_poll_interval_seconds=_optional_float(
+                app_section,
+                "popup_poll_interval_seconds",
+                default=0.1,
+            ),
+            popup_action_delay_seconds=_optional_float(
+                app_section,
+                "popup_action_delay_seconds",
+                default=0.2,
+            ),
+            click_interval_ms=_optional_int(
+                app_section,
+                "click_interval_ms",
+                default=120,
+            ),
+            notepad_select_all_delay_seconds=_optional_float(
+                app_section,
+                "notepad_select_all_delay_seconds",
+                default=0.1,
+            ),
+            notepad_content_paste_delay_seconds=_optional_float(
+                app_section,
+                "notepad_content_paste_delay_seconds",
+                default=0.2,
+            ),
+            notepad_save_shortcut_delay_seconds=_optional_float(
+                app_section,
+                "notepad_save_shortcut_delay_seconds",
+                default=0.3,
+            ),
+            notepad_save_dialog_focus_delay_seconds=_optional_float(
+                app_section,
+                "notepad_save_dialog_focus_delay_seconds",
+                default=0.2,
+            ),
+            notepad_save_field_delay_seconds=_optional_float(
+                app_section,
+                "notepad_save_field_delay_seconds",
+                default=0.1,
+            ),
+            notepad_save_submit_delay_seconds=_optional_float(
+                app_section,
+                "notepad_save_submit_delay_seconds",
+                default=0.1,
             ),
         ),
         output=OutputSettings(
@@ -225,6 +300,13 @@ def _optional_float(data: dict[str, Any], key: str, default: float) -> float:
     return float(value)
 
 
+def _optional_int(data: dict[str, Any], key: str, default: int) -> int:
+    value = data.get(key, default)
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ConfigurationError(f"Expected an integer for '{key}'")
+    return value
+
+
 def _require_bool(data: dict[str, Any], key: str, source: str) -> bool:
     value = data.get(key)
     if not isinstance(value, bool):
@@ -248,6 +330,8 @@ def _validate_settings(settings: Settings) -> None:
         raise ConfigurationError("retry_delay_seconds must be non-negative.")
     if settings.app.post_limit < 1:
         raise ConfigurationError("post_limit must be at least 1.")
+    if settings.app.api_timeout_seconds <= 0:
+        raise ConfigurationError("api_timeout_seconds must be positive.")
     if settings.app.grounding_timeout_seconds <= 0:
         raise ConfigurationError("grounding_timeout_seconds must be positive.")
     if not 0 <= settings.app.confidence_threshold <= 1:
@@ -256,7 +340,35 @@ def _validate_settings(settings: Settings) -> None:
         raise ConfigurationError("typing_delay_ms must be non-negative.")
     if settings.app.launch_timeout_seconds <= 0:
         raise ConfigurationError("launch_timeout_seconds must be positive.")
+    if settings.app.close_timeout_seconds <= 0:
+        raise ConfigurationError("close_timeout_seconds must be positive.")
     if settings.app.window_poll_interval_seconds <= 0:
         raise ConfigurationError("window_poll_interval_seconds must be positive.")
+    if settings.app.show_desktop_delay_seconds < 0:
+        raise ConfigurationError("show_desktop_delay_seconds must be non-negative.")
+    if settings.app.focus_delay_seconds < 0:
+        raise ConfigurationError("focus_delay_seconds must be non-negative.")
+    if settings.app.notepad_focus_delay_seconds < 0:
+        raise ConfigurationError("notepad_focus_delay_seconds must be non-negative.")
+    if settings.app.popup_timeout_seconds < 0:
+        raise ConfigurationError("popup_timeout_seconds must be non-negative.")
+    if settings.app.popup_poll_interval_seconds <= 0:
+        raise ConfigurationError("popup_poll_interval_seconds must be positive.")
+    if settings.app.popup_action_delay_seconds < 0:
+        raise ConfigurationError("popup_action_delay_seconds must be non-negative.")
+    if settings.app.click_interval_ms < 0:
+        raise ConfigurationError("click_interval_ms must be non-negative.")
+    if settings.app.notepad_select_all_delay_seconds < 0:
+        raise ConfigurationError("notepad_select_all_delay_seconds must be non-negative.")
+    if settings.app.notepad_content_paste_delay_seconds < 0:
+        raise ConfigurationError("notepad_content_paste_delay_seconds must be non-negative.")
+    if settings.app.notepad_save_shortcut_delay_seconds < 0:
+        raise ConfigurationError("notepad_save_shortcut_delay_seconds must be non-negative.")
+    if settings.app.notepad_save_dialog_focus_delay_seconds < 0:
+        raise ConfigurationError("notepad_save_dialog_focus_delay_seconds must be non-negative.")
+    if settings.app.notepad_save_field_delay_seconds < 0:
+        raise ConfigurationError("notepad_save_field_delay_seconds must be non-negative.")
+    if settings.app.notepad_save_submit_delay_seconds < 0:
+        raise ConfigurationError("notepad_save_submit_delay_seconds must be non-negative.")
     if settings.output.overwrite_mode not in {"skip", "overwrite", "fail"}:
         raise ConfigurationError("overwrite_mode must be one of: skip, overwrite, fail.")

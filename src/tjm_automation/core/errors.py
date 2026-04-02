@@ -14,6 +14,10 @@ class GroundingError(TjmAutomationError):
     """Raised when target grounding fails or cannot be completed."""
 
 
+class IntegrationError(TjmAutomationError):
+    """Raised when an external API integration fails."""
+
+
 class TargetError(TjmAutomationError):
     """Raised when a target-specific workflow step fails."""
 

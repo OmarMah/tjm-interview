@@ -19,6 +19,21 @@ class AppSettings:
     typing_delay_ms: int
     launch_timeout_seconds: float
     window_poll_interval_seconds: float
+    api_timeout_seconds: float = 15.0
+    close_timeout_seconds: float = 10.0
+    show_desktop_delay_seconds: float = 0.4
+    focus_delay_seconds: float = 0.1
+    notepad_focus_delay_seconds: float = 0.2
+    popup_timeout_seconds: float = 0.4
+    popup_poll_interval_seconds: float = 0.1
+    popup_action_delay_seconds: float = 0.2
+    click_interval_ms: int = 120
+    notepad_select_all_delay_seconds: float = 0.1
+    notepad_content_paste_delay_seconds: float = 0.2
+    notepad_save_shortcut_delay_seconds: float = 0.3
+    notepad_save_dialog_focus_delay_seconds: float = 0.2
+    notepad_save_field_delay_seconds: float = 0.1
+    notepad_save_submit_delay_seconds: float = 0.1
 
 
 @dataclass(frozen=True)
