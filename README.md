@@ -27,8 +27,8 @@ Output files are saved to `save_dir`, and screenshots/debug artifacts go to `art
 
 The system takes a desktop screenshot, asks the vision model to locate the Notepad icon, draws the detected box/point, then clicks that location to launch the app.
 
-![Grounded Notepad icon detection 1](artifacts/grounding/notepad_launch_20260402_185243_notepad_20260402_185255_annotated.png)
+![Grounded Notepad icon detection 1](assets/notepad-grounding-1.png)
 
-![Grounded Notepad icon detection 2](artifacts/grounding/notepad_launch_20260402_190139_notepad_20260402_190149_annotated.png)
+![Grounded Notepad icon detection 2](assets/notepad-grounding-2.png)
 
-![Grounded Notepad icon detection 3](artifacts/grounding/notepad_launch_20260402_190236_notepad_20260402_190253_annotated.png)
+![Grounded Notepad icon detection 3](assets/notepad-grounding-3.png)
