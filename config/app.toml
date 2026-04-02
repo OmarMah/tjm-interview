@@ -1,17 +1,32 @@
 [app]
 resolution_width = 1920
 resolution_height = 1080
-retry_attempts = 3
+retry_attempts = 
 retry_delay_seconds = 1.0
 post_limit = 10
 api_base_url = "https://jsonplaceholder.typicode.com"
+api_timeout_seconds = 15.0
 artifacts_dir = "artifacts"
 grounding_backend = "vision_llm"
 grounding_timeout_seconds = 60.0
 confidence_threshold = 0.72
 typing_delay_ms = 15
-launch_timeout_seconds = 8.0
-window_poll_interval_seconds = 0.25
+launch_timeout_seconds = 4
+close_timeout_seconds = 10.0
+window_poll_interval_seconds = 0.1
+show_desktop_delay_seconds = 3
+focus_delay_seconds = 0.1
+notepad_focus_delay_seconds = 0.2
+popup_timeout_seconds = 0.5
+popup_poll_interval_seconds = 0.2
+popup_action_delay_seconds = 0.2
+click_interval_ms = 120
+notepad_select_all_delay_seconds = 0.1
+notepad_content_paste_delay_seconds = 0.2
+notepad_save_shortcut_delay_seconds = 0.2
+notepad_save_dialog_focus_delay_seconds = 0.2
+notepad_save_field_delay_seconds = 0.1
+notepad_save_submit_delay_seconds = 0.1
 
 [output]
 save_dir = "~/Desktop/tjm-project"

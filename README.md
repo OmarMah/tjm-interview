@@ -4,7 +4,9 @@ Current project status:
 - `pyproject.toml` for `uv`/packaging/dev tooling
 - `config/` for global and target-specific TOML settings
 - `src/tjm_automation/automation/desktop.py` for Windows desktop actions
+- `src/tjm_automation/automation/runner.py` for post-fetching and batch orchestration
 - `src/tjm_automation/grounding/` for pluggable target grounding backends
+- `src/tjm_automation/integrations/posts_api.py` for the JSONPlaceholder posts client
 - `src/tjm_automation/targets/` for thin target-specific adapters such as Notepad
 
 Vision LLM setup:
@@ -33,4 +35,6 @@ python -m tjm_automation click-point 500 400 --double
 python -m tjm_automation detect-target --show-desktop
 python -m tjm_automation launch-target
 python -m tjm_automation write-sample
+python -m tjm_automation run-one --post-id 1
+python -m tjm_automation run-assignment
 ```
