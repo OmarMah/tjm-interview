@@ -29,12 +29,6 @@ class BoundingBox:
 
 
 @dataclass(frozen=True)
-class TextRegion:
-    text: str
-    bounding_box: BoundingBox
-
-
-@dataclass(frozen=True)
 class DetectionResult:
     bounding_box: BoundingBox
     center_x: int

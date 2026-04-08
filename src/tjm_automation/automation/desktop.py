@@ -17,10 +17,6 @@ from pynput.mouse import Button, Controller as MouseController
 from tjm_automation.core.errors import AutomationError
 
 
-SM_CXVIRTUALSCREEN = 78
-SM_CYVIRTUALSCREEN = 79
-SM_XVIRTUALSCREEN = 76
-SM_YVIRTUALSCREEN = 77
 SW_RESTORE = 9
 WM_CLOSE = 0x0010
 POPUP_BUTTON_LABELS = ("ok", "close", "exit")
@@ -65,12 +61,6 @@ class ScreenshotResult:
     path: Path
     width: int
     height: int
-    offset_x: int
-    offset_y: int
-
-
-class _WinPoint(ctypes.Structure):
-    _fields_ = [("x", wintypes.LONG), ("y", wintypes.LONG)]
 
 
 class WindowsDesktopController:
@@ -126,8 +116,6 @@ class WindowsDesktopController:
             path=destination,
             width=width,
             height=height,
-            offset_x=self._get_system_metric(SM_XVIRTUALSCREEN),
-            offset_y=self._get_system_metric(SM_YVIRTUALSCREEN),
         )
 
     def show_desktop(self) -> None:
@@ -307,12 +295,6 @@ class WindowsDesktopController:
             if monotonic() >= deadline:
                 raise AutomationError(f"Timed out waiting for window [{handle}] to close.")
             sleep(poll_interval_seconds)
-
-    def _get_system_metric(self, metric: int) -> int:
-        value = int(self._user32.GetSystemMetrics(metric))
-        if value == 0 and metric in {SM_CXVIRTUALSCREEN, SM_CYVIRTUALSCREEN}:
-            raise AutomationError(f"Windows returned an invalid screen metric for {metric}.")
-        return value
 
     def _set_clipboard_text(self, text: str) -> None:
         result = subprocess.run(

@@ -14,14 +14,9 @@ def configure_logging(level: str = "INFO") -> None:
     )
 
 
-def get_logger(name: str) -> logging.Logger:
-    return logging.getLogger(name)
-
-
 def _coerce_level(level: str) -> int:
     normalized = level.upper()
     resolved = getattr(logging, normalized, None)
     if not isinstance(resolved, int):
         return logging.INFO
     return resolved
-
