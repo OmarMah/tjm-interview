@@ -3,3 +3,6 @@
 artifacts/
 __pycache__/
 *.pyc
+grounding_algorithm/__pycache__/
+grounding_algorithm/artifacts/
+grounding_algorithm/output/
