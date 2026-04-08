@@ -6,3 +6,4 @@ __pycache__/
 grounding_algorithm/__pycache__/
 grounding_algorithm/artifacts/
 grounding_algorithm/output/
+assets/example_run.mp4
